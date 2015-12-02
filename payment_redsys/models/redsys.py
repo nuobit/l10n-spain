@@ -249,13 +249,11 @@ class TxRedsys(models.Model):
         parameters_dic = self.merchant_params_json2dict(data)
         status_code = int(parameters_dic.get('Ds_Response', '29999'))
         if (status_code >= 0) and (status_code <= 99):
-            # 'Paymenr error: Transacción autorizada para pagos'
             tx.write({
                 'state': 'done',
                 'redsys_txnid': parameters_dic.get('Ds_AuthorisationCode'),
-                'state_message': _('Code: %s: %s') % (
-                    parameters_dic.get('Ds_Response'),
-                    parameters_dic.get('Ds_ErrorCode')
+                'state_message': _('Code: %s') % (
+                    parameters_dic.get('Ds_Response')
                 ),
             })
             if tx.acquirer_id.send_quotation:
