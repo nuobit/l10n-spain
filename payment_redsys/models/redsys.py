@@ -254,7 +254,8 @@ class TxRedsys(models.Model):
                 'state': 'done',
                 'redsys_txnid': parameters_dic.get('Ds_AuthorisationCode'),
                 'state_message': _('Code: %s: %s') % (
-                    parameters_dic.get('Ds_Response')
+                    parameters_dic.get('Ds_Response'),
+                    parameters_dic.get('Ds_ErrorCode')
                 ),
             })
             if tx.acquirer_id.send_quotation:
