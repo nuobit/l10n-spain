@@ -249,6 +249,7 @@ class TxRedsys(models.Model):
         parameters_dic = self.merchant_params_json2dict(data)
         status_code = int(parameters_dic.get('Ds_Response', '29999'))
         if (status_code >= 0) and (status_code <= 99):
+            # 'Paymenr error: Transacción autorizada para pagos y preautorizaciones'
             tx.write({
                 'state': 'done',
                 'redsys_txnid': parameters_dic.get('Ds_AuthorisationCode'),
@@ -257,24 +258,6 @@ class TxRedsys(models.Model):
             })
             if tx.acquirer_id.send_quotation:
                 tx.sale_order_id.force_quotation_send()
-            return True
-        if (status_code >= 101) and (status_code <= 202):
-            # 'Payment error: code: %s.'
-            tx.write({
-                'state': 'pending',
-                'redsys_txnid': parameters_dic.get('Ds_AuthorisationCode'),
-                'state_message': _('Error: %s') % parameters_dic.get(
-                    'Ds_Response'),
-            })
-            return True
-        if (status_code == 912) and (status_code == 9912):
-            # 'Payment error: bank unavailable.'
-            tx.write({
-                'state': 'cancel',
-                'redsys_txnid': parameters_dic.get('Ds_AuthorisationCode'),
-                'state_message': (_('Bank Error: %s')
-                                  % parameters_dic.get('Ds_Response')),
-            })
             return True
         else:
             error = 'Redsys: feedback error'
