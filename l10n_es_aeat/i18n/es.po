@@ -3,14 +3,16 @@
 # * l10n_es_aeat
 # 
 # Translators:
+# Antonio Trueba, 2016
+# Antonio Trueba, 2016
 # Carles Antolí <carlesantoli@hotmail.com>, 2015
 # Pedro M. Baeza <pedro.baeza@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: l10n-spain (8.0)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-26 01:42+0000\n"
-"PO-Revision-Date: 2015-11-24 17:46+0000\n"
+"POT-Creation-Date: 2016-01-19 01:41+0000\n"
+"PO-Revision-Date: 2016-02-17 12:54+0000\n"
 "Last-Translator: OCA Transbot <transbot@odoo-community.org>\n"
 "Language-Team: Spanish (http://www.transifex.com/oca/OCA-l10n-spain-8-0/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -220,7 +222,7 @@ msgstr "Cuenta contrapartida"
 #. module: l10n_es_aeat
 #: view:l10n.es.aeat.report:l10n_es_aeat.view_l10n_es_aeat_report_form
 msgid "Create move"
-msgstr "Crear movimiento"
+msgstr "Crear asiento"
 
 #. module: l10n_es_aeat
 #: field:aeat.mod.map.tax.code,create_uid:0
@@ -300,7 +302,7 @@ msgstr "Exportar archivo AEAT BOE"
 #. module: l10n_es_aeat
 #: model:ir.model,name:l10n_es_aeat.model_l10n_es_aeat_report_export_to_boe
 msgid "Export Report to BOE Format"
-msgstr "Exportar a formato BOE"
+msgstr "Exportar declaración al formato BOE"
 
 #. module: l10n_es_aeat
 #: model:ir.actions.act_window,name:l10n_es_aeat.action_aeat_export_config
@@ -766,7 +768,7 @@ msgstr "No hay periodo definido para el informe. Establezca un periodo y vuelva 
 #: code:addons/l10n_es_aeat/models/aeat_report.py:279
 #, python-format
 msgid "There's a missing previous declaration for the period %s."
-msgstr ""
+msgstr "No hay una declaración previa para el periodo %s."
 
 #. module: l10n_es_aeat
 #: help:l10n.es.aeat.report,counterpart_account:0
@@ -821,7 +823,7 @@ msgstr "Opción de alineamiento errónea. Debería ser < o >"
 #: code:addons/l10n_es_aeat/models/aeat_report.py:394
 #, python-format
 msgid "You must fill both journal and counterpart account."
-msgstr "Debe rellenar a la vez diario y cuenta de contrapartida."
+msgstr "Debe rellenar tanto el diario como la cuenta de contrapartida."
 
 #. module: l10n_es_aeat
 #: view:l10n.es.aeat.report.export_to_boe:l10n_es_aeat.wizard_aeat_export

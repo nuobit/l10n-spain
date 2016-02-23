@@ -145,7 +145,10 @@ class AccountBankStatementImport(models.TransientModel):
         """88 - Registro de fin de archivo"""
         st_data['num_registros'] = int(line[20:26])
         # File level checks
-        if st_data['num_registros'] != st_data['_num_records']:
+        # Some banks (like Liderbank) are informing this record number
+        # including the record 88, so checking this with the absolute
+        # difference allows to bypass the error
+        if abs(st_data['num_registros'] - st_data['_num_records']) > 1:
             raise exceptions.Warning(
                 _("Number of records doesn't match with the defined in the "
                   "last record."))
@@ -186,7 +189,7 @@ class AccountBankStatementImport(models.TransientModel):
         return st_data['groups']
 
     def _check_n43(self, data_file):
-        data_file = data_file.decode('iso-8859-1').encode('utf-8')
+        data_file = data_file.decode('iso-8859-1')
         try:
             n43 = self._parse(data_file)
         except exceptions.ValidationError:
@@ -280,6 +283,8 @@ class AccountBankStatementImport(models.TransientModel):
                     'amount': line['importe'],
                     'partner_id': self._get_partner(line),
                 }
+                if not vals_line['name']:
+                    vals_line['name'] = vals_line['ref']
                 transactions.append(vals_line)
         vals_bank_statement = {
             'transactions': transactions,
