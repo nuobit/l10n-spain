@@ -248,6 +248,11 @@ msgid "Subtotal"
 msgstr "Subtotal"
 
 #. module: payment_redsys
+#: view:website:payment_redsys.order
+msgid "Discount (%)"
+msgstr "Descuento (%)"
+
+#. module: payment_redsys
 #: selection:payment.acquirer,redsys_merchant_lang:0
 msgid "Sueco"
 msgstr "Sueco"
