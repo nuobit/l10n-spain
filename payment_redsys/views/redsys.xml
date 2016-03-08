@@ -79,6 +79,7 @@
 	</template>
 
 	<template id="order" name="Payment Redsys Order">
+		<t t-set="show_discount" t-value="order.env.user.has_group('sale.group_discount_per_so_line')"/>
 		<div class="container">
 			<div class="panel panel-default">
 				<div class="panel-heading">
@@ -124,7 +125,7 @@
 			  </div>
 			  		<hr/>
 			  		<div class="row">
-				<div t-attf-class="col-md-{{ '4' if order.payment_acquirer_id.show_discount else '6' }}">
+				<div t-attf-class="col-md-{{ '4' if show_discount else '6' }}">
 				  <strong>Product</strong>
 				</div>
 				<div class="col-md-2 text-right">
@@ -133,7 +134,7 @@
 				<div class="col-md-2 text-right">
 				  <strong>Quantity</strong>
 				</div>
-				<t t-if="order.payment_acquirer_id.show_discount">
+				<t groups="sale.group_discount_per_so_line">
 				    <div class="col-md-2 text-right">
 				        <strong>Discount (%)</strong>
 					</div>
@@ -185,7 +186,7 @@
 				<div class="col-md-1 text-center">
 					<img t-att-src="'/website/image/product.product/%s/image_small/48x48' % ol.product_id.id"/>
 				</div>
-				<div id='product_name' t-attf-class="col-md-{{ '3' if order.payment_acquirer_id.show_discount else '5' }}">
+				<div id='product_name' t-attf-class="col-md-{{ '3' if show_discount else '5' }}">
 					<span t-field="ol.product_id"/>
 				</div>
 				<div class="col-md-2 text-right">
@@ -199,7 +200,7 @@
 						<span t-esc="ol.quantity"/>
 					</t>
 				</div>
-				<t t-if="order.payment_acquirer_id.show_discount">
+				<t groups="sale.group_discount_per_so_line">
 					<div class="col-md-2 text-right">
 						<span t-field="ol.discount"/>
 					</div>
