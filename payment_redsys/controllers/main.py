@@ -36,16 +36,18 @@ class RedsysController(http.Controller):
         return werkzeug.utils.redirect(return_url)
 
     @http.route(
-        ['/payment/redsys/result/<page>'], type='http', auth='user',
+        ['/payment/redsys/result/<page>'], type='http', auth='public',
         methods=['GET'], website=True)
     def redsys_result(self, page, **vals):
         try:
-            order_id = vals.get('order_id', 0)
-            sale_obj = request.env['sale.order']
-            order = sale_obj.browse(int(order_id))
-            res = {
-                'order': order,
-            }
+            res = {}
+            if request.env.user.id != request.env.ref('base.public_user').id:
+                order_id = vals.get('order_id', 0)
+                sale_obj = request.env['sale.order']
+                order = sale_obj.browse(int(order_id))
+                res = {
+                    'order': order,
+                }
             return request.render('payment_redsys.%s' % str(page), res)
         except:
             return request.render('website.404')
