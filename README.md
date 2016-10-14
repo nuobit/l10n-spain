@@ -1,6 +1,6 @@
 [![Runbot Status](https://runbot.odoo-community.org/runbot/badge/flat/189/8.0.svg)](https://runbot.odoo-community.org/runbot/repo/github-com-oca-l10n-spain-189)
 [![Build Status](https://travis-ci.org/OCA/l10n-spain.svg?branch=8.0)](https://travis-ci.org/OCA/l10n-spain)
-[![Coverage Status](https://coveralls.io/repos/OCA/l10n-spain/badge.svg?branch=8.0)](https://coveralls.io/r/OCA/l10n-spain?branch=8.0)
+[![codecov](https://codecov.io/gh/OCA/l10n-spain/branch/8.0/graph/badge.svg)](https://codecov.io/gh/OCA/l10n-spain)
 
 Localización española de Odoo
 =============================
@@ -42,6 +42,7 @@ addon | version | summary
 [l10n_es_aeat_mod296](l10n_es_aeat_mod296/) | 8.0.1.2.0 | AEAT modelo 296
 [l10n_es_aeat_mod303](l10n_es_aeat_mod303/) | 8.0.1.6.0 | AEAT modelo 303
 [l10n_es_aeat_mod340](l10n_es_aeat_mod340/) | 8.0.2.2.0 | Generación de fichero modelo 340 y libro de IVA
+[l10n_es_aeat_mod340_cash_basis](l10n_es_aeat_mod340_cash_basis/) | 8.0.1.0.0 | Extensión del modelo 340 para criterio de caja
 [l10n_es_aeat_mod340_type0](l10n_es_aeat_mod340_type0/) | 8.0.1.0.0 | Generación de fichero modelo 340. Registro tipo 0
 [l10n_es_aeat_mod347](l10n_es_aeat_mod347/) | 8.0.1.3.1 | Modelo 347 AEAT
 [l10n_es_aeat_mod349](l10n_es_aeat_mod349/) | 8.0.2.2.0 | Modelo 349 AEAT
