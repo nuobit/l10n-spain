@@ -21,6 +21,7 @@ Para dudas funcionales o soporte de la comunidad, dirigirse a:
 https://odoospain.odoo.com/forum/ayuda-1
 
 [//]: # (addons)
+
 Available addons
 ----------------
 addon | version | summary
@@ -40,8 +41,8 @@ addon | version | summary
 [l10n_es_aeat_mod130](l10n_es_aeat_mod130/) | 8.0.0.8.0 | AEAT modelo 130
 [l10n_es_aeat_mod216](l10n_es_aeat_mod216/) | 8.0.1.2.0 | AEAT modelo 216
 [l10n_es_aeat_mod296](l10n_es_aeat_mod296/) | 8.0.1.2.0 | AEAT modelo 296
-[l10n_es_aeat_mod303](l10n_es_aeat_mod303/) | 8.0.1.8.0 | AEAT modelo 303
-[l10n_es_aeat_mod340](l10n_es_aeat_mod340/) | 8.0.2.2.1 | Generación de fichero modelo 340 y libro de IVA
+[l10n_es_aeat_mod303](l10n_es_aeat_mod303/) | 8.0.1.9.0 | AEAT modelo 303
+[l10n_es_aeat_mod340](l10n_es_aeat_mod340/) | 8.0.2.3.0 | Generación de fichero modelo 340 y libro de IVA
 [l10n_es_aeat_mod340_cash_basis](l10n_es_aeat_mod340_cash_basis/) | 8.0.1.0.0 | Extensión del modelo 340 para criterio de caja
 [l10n_es_aeat_mod340_type0](l10n_es_aeat_mod340_type0/) | 8.0.1.0.0 | Generación de fichero modelo 340. Registro tipo 0
 [l10n_es_aeat_mod347](l10n_es_aeat_mod347/) | 8.0.1.4.0 | Modelo 347 AEAT
