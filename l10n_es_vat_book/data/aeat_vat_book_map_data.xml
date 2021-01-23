@@ -72,7 +72,7 @@
         <field name="book_type">received</field>
         <field name="special_tax_group" eval="False"/>
         <field name="tax_tmpl_ids" eval="[
-            (4, ref('l10n_es.account_tax_template_p_iva0_nd')),
+            (4, ref('l10n_es.account_tax_template_p_iva21_nd')),
         ]"/>
     </record>
 
