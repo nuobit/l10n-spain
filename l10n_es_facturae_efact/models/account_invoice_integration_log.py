@@ -54,25 +54,25 @@ class AccountInvoiceIntegration(models.Model):
             hub_feedback = status.find('HubFeedback')
             if hub_feedback is None:
                 continue
-            invoice_feedback = status.find('InvoiceFeedback')
             hub_id = hub_feedback.find('HubId').text
-            if invoice_feedback is not None:
-                integration = self.env['account.invoice.integration'].search([
+            integration = self.env['account.invoice.integration'].search([
+                ('method_id', '=', self.env.ref(
+                    'l10n_es_facturae_efact.integration_efact').id),
+                ('efact_hub_id', '=', hub_id)
+            ])
+            if not integration:
+                integration = self.env[
+                    'account.invoice.integration'
+                ].search([
                     ('method_id', '=', self.env.ref(
                         'l10n_es_facturae_efact.integration_efact').id),
-                    ('efact_hub_id', '=', hub_id)
+                    ('efact_hub_id', '=', False),
+                    ('efact_reference', '=', hub_feedback.find(
+                        'HubFilename').text)
                 ])
-                if not integration:
-                    integration = self.env[
-                        'account.invoice.integration'
-                    ].search([
-                        ('method_id', '=', self.env.ref(
-                            'l10n_es_facturae_efact.integration_efact').id),
-                        ('efact_hub_id', '=', False),
-                        ('efact_reference', '=', hub_feedback.find(
-                            'HubFilename').text)
-                    ])
-                    integration.efact_hub_id = hub_id
+                integration.efact_hub_id = hub_id
+            invoice_feedback = status.find('InvoiceFeedback')
+            if invoice_feedback is not None:
                 for feedback in invoice_feedback.findall('Feedback'):
                     self.env['account.invoice.integration.log'].create({
                         'type': 'update',
@@ -90,9 +90,9 @@ class AccountInvoiceIntegration(models.Model):
                         integration.register_number = register.text
                     integration.integration_status = 'efact-' + feedback.find(
                         'Status').text
-                    integration.integration_description = feedback.find(
-                        'Reason'
-                    ).find('Description').text
+                    reason = feedback.find('Reason')
+                    if reason is not None:
+                        integration.integration_description = reason.find('Description').text
                 for annex in feedback.findall('ElectronicAcknowledgment'):
                     annex_name = '%a.%s' % (
                         integration.register_number,
@@ -107,14 +107,6 @@ class AccountInvoiceIntegration(models.Model):
                         'mimetype': 'application/xml'
                     })
             else:
-                integration = self.env['account.invoice.integration'].search([
-                    ('method_id', '=', self.env.ref(
-                        'l10n_es_facturae_efact.integration_efact').id),
-                    ('efact_hub_id', '=', False),
-                    ('efact_reference', '=', hub_feedback.find(
-                        'HubFilename').text)
-                ])
-                integration.efact_hub_id = hub_id
                 self.env['account.invoice.integration.log'].create({
                     'type': 'update',
                     'integration_id': integration.id,
@@ -178,7 +170,7 @@ class AccountInvoiceIntegration(models.Model):
         path = sftp.normalize('.')
         sftp.chdir(path + statout_path)
         attrs = sftp.listdir_attr('.')
-        attrs.sort(key=lambda attr: attr.st_atime)
+        attrs.sort(key=lambda attr: attr.st_mtime)
         to_remove = []
         for attr in attrs:
             file = sftp.open(attr.filename)
