@@ -518,8 +518,10 @@ class AccountMove(models.Model):
         for line in self.line_ids:
             sign = -1 if self.move_type[:3] == "out" else 1
             for tax in line.tax_ids:
-                res.setdefault(tax, {"tax": tax, "base": 0, "amount": 0})
-                res[tax]["base"] += line.balance * sign
+                taxes = tax.amount_type == "group" and tax.children_tax_ids or tax
+                for tax in taxes:
+                    res.setdefault(tax, {"tax": tax, "base": 0, "amount": 0})
+                    res[tax]["base"] += line.balance * sign
             if line.tax_line_id:
                 tax = line.tax_line_id
                 if "invoice" in self.move_type:
