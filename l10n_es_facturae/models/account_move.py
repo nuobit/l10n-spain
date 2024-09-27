@@ -207,24 +207,7 @@ class AccountMove(models.Model):
 
     def _get_facturae_tax_info(self):
         self.ensure_one()
-        sign = -1 if self.move_type[:3] == "out" else 1
-        output_taxes = defaultdict(lambda: {"base": 0, "amount": 0})
-        withheld_taxes = defaultdict(lambda: {"base": 0, "amount": 0})
-        for line in self.line_ids:
-            base = line.balance * sign
-            for tax in line.tax_ids:
-                tax_amount = base * tax.amount / 100
-                if self.company_id.tax_calculation_rounding_method == "round_per_line":
-                    tax_amount = tools.float_round(
-                        tax_amount, precision_rounding=self.currency_id.rounding
-                    )
-                if tools.float_compare(tax.amount, 0, precision_digits=2) >= 0:
-                    output_taxes[tax]["base"] += base
-                    output_taxes[tax]["amount"] += tax_amount
-                else:
-                    withheld_taxes[tax]["base"] += base
-                    withheld_taxes[tax]["amount"] += tax_amount
-        return output_taxes, withheld_taxes
+        return self.line_ids._get_facturae_line_tax_info()
 
 
 class AccountMoveLine(models.Model):
@@ -274,6 +257,39 @@ class AccountMoveLine(models.Model):
             "res_id": self.id,
             "context": self.env.context,
         }
+
+    def _get_facturae_line_tax_info(self):
+        output_taxes = defaultdict(lambda: {"base": 0, "amount": 0})
+        withheld_taxes = defaultdict(lambda: {"base": 0, "amount": 0})
+        for rec in self:
+            taxes_res = rec.tax_ids.compute_all(
+                rec.price_unit * (1 - (rec.discount / 100.0)),
+                currency=rec.currency_id,
+                quantity=rec.quantity,
+                product=rec.product_id,
+                partner=rec.partner_id,
+                is_refund=rec.move_id.move_type in ("in_refund", "out_refund"),
+            )
+            rate = (
+                abs(rec.balance) / abs(rec.amount_currency)
+                if rec.amount_currency
+                else 0.0
+            )
+            for tax_res in taxes_res["taxes"]:
+                tax_amount = tax_res["amount"] * rate
+                if (
+                    self.move_id.company_id.tax_calculation_rounding_method
+                    == "round_per_line"
+                ):
+                    tax_amount = rec.company_currency_id.round(tax_amount)
+                tax = self.env["account.tax"].browse(tax_res["id"])
+                if tools.float_compare(tax.amount, 0, precision_digits=2) >= 0:
+                    output_taxes[tax]["base"] += tax_res["base"]
+                    output_taxes[tax]["amount"] += tax_amount
+                else:
+                    withheld_taxes[tax]["base"] += tax_res["base"]
+                    withheld_taxes[tax]["amount"] += tax_amount
+        return output_taxes, withheld_taxes
 
 
 class L10nEsFacturaeAttachment(models.Model):
