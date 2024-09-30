@@ -615,10 +615,10 @@
                                         </TaxableBase>
                                         <TaxAmount>
                                             <TotalAmount
-                                                t-esc="('%.2f' if version == '3_2' else '%.8f') % (line_sign * (line.price_subtotal * (line_tax.amount) / 100))"
+                                                t-esc="('%.2f' if version == '3_2' else '%.8f') % (line_sign * (line._get_facturae_tax_line_info(line_tax)))"
                                             />
                                             <EquivalentInEuros
-                                                t-esc="'%.2f' % (line_sign * (line.price_subtotal * (line_tax.amount) / 100 * euro_rate / currency_rate))"
+                                                t-esc="'%.2f' % (line_sign * (line._get_facturae_tax_line_info(line_tax) * euro_rate / currency_rate))"
                                             />
                                         </TaxAmount>
                                     </Tax>
