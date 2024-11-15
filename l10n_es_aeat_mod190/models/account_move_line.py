@@ -40,20 +40,34 @@ class AccountMoveLine(models.Model):
 
     @api.depends("move_id.aeat_perception_key_id")
     def _compute_aeat_perception_keys(self):
-        for line in self:
-            aeat_perception_key_id = False
-            aeat_perception_subkey_id = False
-            if (
-                line.move_id.is_invoice()
-                and not line.exclude_from_invoice_tab
-                and line.id in line.move_id.invoice_line_ids.ids
-                and line.move_id.aeat_perception_key_id
-            ):
-                aeat_perception_key_id = line.move_id.aeat_perception_key_id.id
-                aeat_perception_subkey_id = line.move_id.aeat_perception_subkey_id.id
-            line.update(
-                {
-                    "aeat_perception_key_id": aeat_perception_key_id,
-                    "aeat_perception_subkey_id": aeat_perception_subkey_id,
-                }
+        if not self:
+            return
+
+        line_ids = tuple(self.ids)
+        update_query = """
+            WITH filtered_lines AS (
+                SELECT line.id AS line_id,
+                       move.aeat_perception_key_id,
+                       move.aeat_perception_subkey_id
+                FROM account_move_line AS line
+                JOIN account_move AS move ON line.move_id = move.id
+                WHERE line.id IN %(line_ids)s
+                  AND move.move_type IN ('out_invoice', 'out_refund', 'in_refund', 'in_invoice')
+                  AND COALESCE(line.exclude_from_invoice_tab, FALSE) = FALSE
+                  AND move.aeat_perception_key_id IS NOT NULL
+            ),
+            updated_keys AS (
+                UPDATE account_move_line AS line
+                SET aeat_perception_key_id = filtered_lines.aeat_perception_key_id,
+                    aeat_perception_subkey_id = filtered_lines.aeat_perception_subkey_id
+                FROM filtered_lines
+                WHERE line.id = filtered_lines.line_id
+                RETURNING line.id AS updated_line_id
             )
+            UPDATE account_move_line
+            SET aeat_perception_key_id = NULL,
+                aeat_perception_subkey_id = NULL
+            WHERE id IN %(line_ids)s
+            AND id NOT IN (SELECT updated_line_id FROM updated_keys);
+        """
+        self.env.cr.execute(update_query, {"line_ids": line_ids})
