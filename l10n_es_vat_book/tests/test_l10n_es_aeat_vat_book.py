@@ -33,14 +33,22 @@ class TestL10nEsAeatVatBookBase(TestL10nEsAeatModBase):
 
 class TestL10nEsAeatVatBook(TestL10nEsAeatVatBookBase):
     def test_model_vat_book(self):
+        # Customer with alternative AEAT identification
+        self.customer.write(
+            {
+                "vat": False,
+                "aeat_identification_type": "06",
+                "aeat_identification": "ABC123456",
+            }
+        )
         # Purchase invoices
         self._invoice_purchase_create("2017-01-01")
         # Sale invoices
         sale = self._invoice_sale_create("2017-01-13")
         self._invoice_refund(sale, "2017-01-14")
         # Deactivate a tax for checking that everything continues working
-        tax_id = self.company._get_tax_id_from_xmlid("account_tax_template_p_iva21_sc")
-        self.env["account.tax"].browse(tax_id).active = False
+        tax = self.company._get_taxes_from_xmlids(["account_tax_template_p_iva21_sc"])
+        tax.active = False
         # Create model
         self.company.vat = "ES12345678Z"
         vat_book = self.env["l10n.es.vat.book"].create(
@@ -60,6 +68,11 @@ class TestL10nEsAeatVatBook(TestL10nEsAeatVatBookBase):
         )
         _logger.debug("Calculate VAT Book 1T 2017")
         vat_book.button_calculate()
+        # Check that the customer is not marked as "Without VAT"
+        for line in vat_book.issued_line_ids:
+            self.assertNotEqual(line.exception_text, self.env._("Without VAT"))
+        for line in vat_book.rectification_issued_line_ids:
+            self.assertNotEqual(line.exception_text, self.env._("Without VAT"))
         # Check issued invoices
         for line in vat_book.issued_line_ids:
             self.assertEqual(fields.Date.to_string(line.invoice_date), "2017-01-13")

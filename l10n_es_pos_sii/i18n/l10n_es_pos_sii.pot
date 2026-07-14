@@ -14,8 +14,23 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: l10n_es_pos_sii
+#: model:ir.model.fields,help:l10n_es_pos_sii.field_pos_order__sii_match_state
+msgid ""
+"- No testable: The counterpart is not subscribed to SII the record will not be contrasted.\n"
+"- In process of contrast: AEAT is processing the data soon will be a result.\n"
+"- Not contrasted: The counterpart has not sent the invoice to SII, AEAT gives up to 4 months in order to contrast the information.\n"
+"- Partially contrasted: A invoice has been found but some data is different.\n"
+"- Contrasted: The counterpart has send the invoice to SII, all is OK."
+msgstr ""
+
+#. module: l10n_es_pos_sii
 #: model:ir.model.fields,field_description:l10n_es_pos_sii.field_pos_order__aeat_send_error
 msgid "AEAT Send Error"
+msgstr ""
+
+#. module: l10n_es_pos_sii
+#: model:ir.model.fields,field_description:l10n_es_pos_sii.field_pos_order__sii_contrast_state
+msgid "AEAT contrast state"
 msgstr ""
 
 #. module: l10n_es_pos_sii
@@ -51,18 +66,6 @@ msgstr ""
 #. module: l10n_es_pos_sii
 #: model_terms:ir.ui.view,arch_db:l10n_es_pos_sii.view_pos_order_filter
 msgid "Cancelled invoices at SII"
-msgstr ""
-
-#. module: l10n_es_pos_sii
-#. odoo-javascript
-#: code:addons/l10n_es_pos_sii/static/src/app/screens/ticket_screen/invoice_button.esm.js:0
-msgid "Cannot Invoice"
-msgstr ""
-
-#. module: l10n_es_pos_sii
-#. odoo-javascript
-#: code:addons/l10n_es_pos_sii/static/src/app/screens/ticket_screen/invoice_button.esm.js:0
-msgid "Cannot invoice order from closed session."
 msgstr ""
 
 #. module: l10n_es_pos_sii
@@ -125,9 +128,8 @@ msgid ""
 msgstr ""
 
 #. module: l10n_es_pos_sii
-#. odoo-javascript
-#: code:addons/l10n_es_pos_sii/static/src/app/screens/ticket_screen/invoice_button.esm.js:0
-msgid "Invoice"
+#: model:ir.model.fields,field_description:l10n_es_pos_sii.field_pos_order__l10n_es_exchange_invoiced
+msgid "L10N Es Exchange Invoiced"
 msgstr ""
 
 #. module: l10n_es_pos_sii
@@ -143,6 +145,11 @@ msgstr ""
 #. module: l10n_es_pos_sii
 #: model:ir.model.fields,field_description:l10n_es_pos_sii.field_pos_order__sii_macrodata
 msgid "MacroData"
+msgstr ""
+
+#. module: l10n_es_pos_sii
+#: model:ir.model.fields,field_description:l10n_es_pos_sii.field_pos_order__sii_match_state
+msgid "Match state"
 msgstr ""
 
 #. module: l10n_es_pos_sii
@@ -168,12 +175,6 @@ msgstr ""
 #. module: l10n_es_pos_sii
 #: model_terms:ir.ui.view,arch_db:l10n_es_pos_sii.view_pos_pos_form_inherit_inh_l10n_es_pos_sii
 msgid "Registration key"
-msgstr ""
-
-#. module: l10n_es_pos_sii
-#. odoo-javascript
-#: code:addons/l10n_es_pos_sii/static/src/app/screens/ticket_screen/invoice_button.esm.js:0
-msgid "Reprint Invoice"
 msgstr ""
 
 #. module: l10n_es_pos_sii
@@ -227,11 +228,6 @@ msgid "SII Send Date"
 msgstr ""
 
 #. module: l10n_es_pos_sii
-#: model:ir.model.fields,field_description:l10n_es_pos_sii.field_pos_order__sii_session_closed
-msgid "SII Session Closed"
-msgstr ""
-
-#. module: l10n_es_pos_sii
 #: model:ir.model.fields,field_description:l10n_es_pos_sii.field_pos_order__sii_account_registration_date
 msgid "SII account registration date"
 msgstr ""
@@ -259,6 +255,21 @@ msgstr ""
 #. module: l10n_es_pos_sii
 #: model_terms:ir.ui.view,arch_db:l10n_es_pos_sii.view_pos_order_filter
 msgid "SII filters"
+msgstr ""
+
+#. module: l10n_es_pos_sii
+#: model:ir.model.fields,field_description:l10n_es_pos_sii.field_pos_order__sii_match_difference_ids
+msgid "SII match differences"
+msgstr ""
+
+#. module: l10n_es_pos_sii
+#: model:ir.model.fields,field_description:l10n_es_pos_sii.field_pos_order__sii_match_return
+msgid "SII match return"
+msgstr ""
+
+#. module: l10n_es_pos_sii
+#: model:ir.model.fields,field_description:l10n_es_pos_sii.field_pos_order__sii_match_sent
+msgid "SII match sent"
 msgstr ""
 
 #. module: l10n_es_pos_sii
@@ -312,20 +323,8 @@ msgid "Send to SII"
 msgstr ""
 
 #. module: l10n_es_pos_sii
-#. odoo-javascript
-#: code:addons/l10n_es_pos_sii/static/src/app/screens/ticket_screen/invoice_button.esm.js:0
-msgid "Session is closed"
-msgstr ""
-
-#. module: l10n_es_pos_sii
 #: model:ir.model.fields,field_description:l10n_es_pos_sii.field_pos_order__sii_needs_cancel
 msgid "Sii Needs Cancel"
-msgstr ""
-
-#. module: l10n_es_pos_sii
-#. odoo-python
-#: code:addons/l10n_es_pos_sii/models/pos_order.py:0
-msgid "Simplified Invoice Partner not found. Please update l10n_es module."
 msgstr ""
 
 #. module: l10n_es_pos_sii
@@ -349,9 +348,11 @@ msgid "The last attempt to sent to SII has failed"
 msgstr ""
 
 #. module: l10n_es_pos_sii
-#. odoo-python
-#: code:addons/l10n_es_pos_sii/models/pos_order.py:0
-msgid "There's a mismatch in taxes for RE. Check them."
+#: model:ir.model.fields,help:l10n_es_pos_sii.field_pos_order__l10n_es_exchange_invoiced
+msgid ""
+"This field is automatically set to True when an invoice is generated after "
+"the pos order has been created. It is used to disable sii_enabled and "
+"prevent the invoice from being sent to the SII more than once."
 msgstr ""
 
 #. module: l10n_es_pos_sii

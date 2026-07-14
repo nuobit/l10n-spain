@@ -15,6 +15,8 @@
 import json
 import logging
 
+from unidecode import unidecode
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.modules.registry import Registry
@@ -64,7 +66,7 @@ class AccountMove(models.Model):
                 "[1]-Real property with cadastral code located within "
                 "the Spanish territory except Basque Country or Navarra",
             ),
-            ("2", "[2]-Real property located in the " "Basque Country or Navarra"),
+            ("2", "[2]-Real property located in the Basque Country or Navarra"),
             (
                 "3",
                 "[3]-Real property in any of the above situations "
@@ -109,16 +111,14 @@ class AccountMove(models.Model):
     @api.depends("company_id", "fiscal_position_id", "invoice_line_ids.tax_ids")
     def _compute_dua_invoice(self):
         for invoice in self:
-            taxes = self.env["account.tax"]
-            for template in [
+            xmlids = [
                 "account_tax_template_p_iva4_ibc_group",
                 "account_tax_template_p_iva10_ibc_group",
                 "account_tax_template_p_iva21_ibc_group",
-            ]:
-                tax_id = invoice.company_id._get_tax_id_from_xmlid(template)
-                taxes |= self.env["account.tax"].browse(tax_id)
+            ]
+            taxes = invoice.company_id._get_taxes_from_xmlids(xmlids)
             invoice.sii_dua_invoice = invoice.line_ids.filtered(
-                lambda x, taxes=taxes: any([tax in taxes for tax in x.tax_ids])
+                lambda x, taxes=taxes: bool(taxes & x.tax_ids)
             )
 
     def _aeat_get_partner(self):
@@ -218,16 +218,6 @@ class AccountMove(models.Model):
         # Use the method at l10n_es_aeat that returns the needed info
         return self._get_aeat_tax_info()
 
-    @api.model
-    def _merge_tax_dict(self, vat_list, tax_dict, comp_key, merge_keys):
-        """Helper method for merging values in an existing tax dictionary."""
-        for existing_dict in vat_list:
-            if existing_dict.get(comp_key, "-99") == tax_dict.get(comp_key, "-99"):
-                for key in merge_keys:
-                    existing_dict[key] += tax_dict[key]
-                return True
-        return False
-
     def _get_sii_in_taxes(self):
         """Get the taxes for purchase invoices.
 
@@ -285,7 +275,7 @@ class AccountMove(models.Model):
                 if not self._merge_tax_dict(
                     base_dict["DetalleIVA"],
                     tax_dict,
-                    "TipoImpositivo",
+                    ["TipoImpositivo", "BienInversion"],
                     ["BaseImponible", "CuotaSoportada"],
                 ):
                     base_dict["DetalleIVA"].append(tax_dict)
@@ -679,8 +669,9 @@ class AccountMove(models.Model):
                     names = invoice.mapped("invoice_line_ids.name") or invoice.mapped(
                         "invoice_line_ids.ref"
                     )
-                    description += " - ".join(filter(None, names))
-            invoice.sii_description = (description or "")[:500] or "/"
+                    names = [unidecode(x) for x in names if x]  # Avoid "ugly" chars
+                    description += " - ".join(filter(None, names)).replace("\n", " ")
+            invoice.sii_description = description or "/"  # shrink to 500 by the field
 
     @api.depends(
         "company_id",
@@ -697,7 +688,7 @@ class AccountMove(models.Model):
     def _compute_sii_enabled(self):
         """Compute if the invoice is enabled for the SII"""
         for invoice in self:
-            dua_sii_exempt_taxes = invoice._get_dua_sii_exempt_taxes()
+            dua_taxes = invoice._get_dua_sii_exempt_taxes()
             if (
                 invoice.company_id.sii_enabled
                 and invoice.journal_id.sii_enabled
@@ -712,11 +703,9 @@ class AccountMove(models.Model):
                         or not invoice.fiscal_position_id
                     )
                     and (
-                        not dua_sii_exempt_taxes
+                        not dua_taxes
                         or not invoice.invoice_line_ids.filtered(
-                            lambda x, dua_taxes=dua_sii_exempt_taxes: any(
-                                [tax.id in dua_taxes for tax in x.tax_ids]
-                            )
+                            lambda x, dua_taxes=dua_taxes: bool(dua_taxes & x.tax_ids)
                         )
                     )
                     and (

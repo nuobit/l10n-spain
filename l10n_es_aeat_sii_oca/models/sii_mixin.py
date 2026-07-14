@@ -5,16 +5,15 @@
 # Copyright 2011,2024 Tecnativa - Pedro M. Baeza
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import json
-import logging
+
+from unidecode import unidecode
 
 from odoo import api, exceptions, fields, models
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import UserError
 from odoo.modules.registry import Registry
 from odoo.tools.float_utils import float_compare
 
 from odoo.addons.l10n_es_aeat.models.aeat_mixin import round_by_keys
-
-_logger = logging.getLogger(__name__)
 
 SII_STATES = [
     ("sent_modified", "Registered in SII but last modifications not sent"),
@@ -35,9 +34,10 @@ class SiiMixin(models.AbstractModel):
         comodel_name="res.company",
         string="Company",
     )
-    sii_description = fields.Text(
+    sii_description = fields.Char(
         string="SII computed description",
         compute="_compute_sii_description",
+        size=500,
         default="/",
         store=True,
         readonly=False,
@@ -46,7 +46,7 @@ class SiiMixin(models.AbstractModel):
     aeat_state = fields.Selection(
         selection_add=SII_STATES,
     )
-    sii_csv = fields.Char(string="SII CSV", copy=False, readonly=True)
+    sii_csv = fields.Char(string="SII CSV", copy=False, readonly=True, index=True)
     sii_return = fields.Text(string="SII Return", copy=False, readonly=True)
     sii_refund_type = fields.Selection(
         selection=[
@@ -209,21 +209,13 @@ class SiiMixin(models.AbstractModel):
         tax_templates = sii_map.map_lines.filtered(
             lambda x: x.code in codes
         ).tax_xmlid_ids
-        taxes = self.env["account.tax"]
-        for template in tax_templates:
-            tax_id = self.company_id._get_tax_id_from_xmlid(template.name)
-            taxes |= self.env["account.tax"].browse(tax_id)
-        return taxes
+        return self.company_id._get_taxes_from_xmlids(tax_templates.mapped("name"))
 
     def _get_dua_sii_exempt_taxes(self):
         self.ensure_one()
-        taxes = []
-        dua_exempt_tax = self.company_id._get_tax_id_from_xmlid(
-            "account_tax_template_p_dua_exempt"
+        return self.company_id._get_taxes_from_xmlids(
+            ["account_tax_template_p_dua_exempt"]
         )
-        if dua_exempt_tax:
-            taxes.append(dua_exempt_tax)
-        return taxes
 
     def _get_aeat_header(self, tipo_comunicacion=False, cancellation=False):
         """Builds SII send header
@@ -299,7 +291,11 @@ class SiiMixin(models.AbstractModel):
             self.sii_send_date = send_date
         else:
             for record in self:
-                record.sii_send_date = record.company_id._get_sii_sending_time()
+                # If the document failed to be sent to SII previously, send it now
+                if record.aeat_send_failed:
+                    record.sii_send_date = fields.Datetime.now()
+                else:
+                    record.sii_send_date = record.company_id._get_sii_sending_time()
         # Create trigger if any company needs to send doc to SII now
         # so the sending to SII cron is executed as soon as possible
         if (
@@ -475,18 +471,34 @@ class SiiMixin(models.AbstractModel):
             or "ImporteTAIReglasLocalizacion"
         )
 
-    def _is_sii_type_breakdown_required(self, taxes_dict):
+    @api.model
+    def _merge_tax_dict(self, vat_list, tax_dict, comp_keys, merge_keys):
+        """Helper method for merging values in an existing tax dictionary.
+
+        :param vat_list: List of tax dictionaries to check for merge.
+        :param tax_dict: Tax dictionary to merge.
+        :param comp_keys: List of keys to compare for matching.
+        :param merge_keys: List of keys whose values should be summed.
+        """
+        for existing_dict in vat_list:
+            match = True
+            for key in comp_keys:
+                if existing_dict.get(key, "-99") != tax_dict.get(key, "-99"):
+                    match = False
+                    break
+            if match:
+                for key in merge_keys:
+                    existing_dict[key] += tax_dict[key]
+                return True
+        return False
+
+    def _is_sii_type_breakdown_required(self):
         """Calculates if the block 'DesgloseTipoOperacion' is required for
         the invoice communication."""
         self.ensure_one()
-        if "DesgloseFactura" not in taxes_dict:
-            return False
         country_code = self._get_aeat_country_code()
         sii_gen_type = self._get_sii_gen_type()
-        if "DesgloseTipoOperacion" in taxes_dict:
-            # DesgloseTipoOperacion and DesgloseFactura are Exclusive
-            return True
-        elif sii_gen_type in (2, 3):
+        if sii_gen_type in (2, 3):
             # DesgloseTipoOperacion required for Intracommunity and
             # Export operations
             return True
@@ -522,23 +534,29 @@ class SiiMixin(models.AbstractModel):
         taxes_not_in_total_neg = self._get_aeat_taxes_map(
             ["NotIncludedInTotalNegative"], date
         )
+        do_breakdown = self._is_sii_type_breakdown_required()
+        if do_breakdown:
+            tax_breakdown = taxes_dict.setdefault("DesgloseTipoOperacion", {})
+            good_breakdown = tax_breakdown.setdefault("Entrega", {})
+            service_breakdown = tax_breakdown.setdefault("PrestacionServicios", {})
+        else:
+            tax_breakdown = taxes_dict.setdefault("DesgloseFactura", {})
+            good_breakdown = tax_breakdown
+            service_breakdown = tax_breakdown
         base_not_in_total = self._get_aeat_taxes_map(["BaseNotIncludedInTotal"], date)
         not_in_amount_total = 0
         exempt_cause = self._get_sii_exempt_cause(taxes_sfesbe + taxes_sfesse)
         tax_lines = self._get_tax_info()
         for tax_line in tax_lines.values():
             tax = tax_line["tax"]
-            breakdown_taxes = taxes_sfesb + taxes_sfesisp + taxes_sfens + taxes_sfesbe
             if tax in taxes_not_in_total:
                 not_in_amount_total += tax_line["amount"]
             elif tax in taxes_not_in_total_neg:
                 not_in_amount_total -= tax_line["amount"]
             elif tax in base_not_in_total:
                 not_in_amount_total += tax_line["base"]
-            if tax in breakdown_taxes:
-                tax_breakdown = taxes_dict.setdefault("DesgloseFactura", {})
             if tax in (taxes_sfesb + taxes_sfesbe + taxes_sfesisp):
-                sub_dict = tax_breakdown.setdefault("Sujeta", {})
+                sub_dict = good_breakdown.setdefault("Sujeta", {})
                 # TODO l10n_es no tiene impuesto exento de bienes
                 # corrientes nacionales
                 if tax in taxes_sfesbe:
@@ -551,42 +569,39 @@ class SiiMixin(models.AbstractModel):
                         det_dict["CausaExencion"] = exempt_cause
                     det_dict["BaseImponible"] += tax_line["base"]
                 else:
+                    not_exempt_type = "S2" if tax in taxes_sfesisp else "S1"
                     sub_dict.setdefault(
                         "NoExenta",
                         {
-                            "TipoNoExenta": ("S2" if tax in taxes_sfesisp else "S1"),
+                            "TipoNoExenta": not_exempt_type,
                             "DesgloseIVA": {"DetalleIVA": []},
                         },
                     )
-                    not_ex_type = sub_dict["NoExenta"]["TipoNoExenta"]
-                    if tax in taxes_sfesisp:
-                        is_s3 = not_ex_type == "S1"
-                    else:
-                        is_s3 = not_ex_type == "S2"
-                    if is_s3:
+                    if not_exempt_type != sub_dict["NoExenta"]["TipoNoExenta"]:
+                        # There's a mix of ISP/non ISP -> S3
                         sub_dict["NoExenta"]["TipoNoExenta"] = "S3"
-                    sub_dict["NoExenta"]["DesgloseIVA"]["DetalleIVA"].append(
-                        self._get_sii_tax_dict(tax_line, tax_lines),
-                    )
+                    sub = sub_dict["NoExenta"]["DesgloseIVA"]["DetalleIVA"]
+                    tax_dict = self._get_sii_tax_dict(tax_line, tax_lines)
+                    if not self._merge_tax_dict(
+                        sub,
+                        tax_dict,
+                        ["TipoImpositivo"],
+                        ["BaseImponible", "CuotaRepercutida"],
+                    ):
+                        sub.append(tax_dict)
             # No sujetas
             if tax in taxes_sfens:
                 # ImporteTAIReglasLocalizacion or ImportePorArticulos7_14_Otros
                 default_no_taxable_cause = self._get_no_taxable_cause()
-                nsub_dict = tax_breakdown.setdefault(
+                nsub_dict = good_breakdown.setdefault(
                     "NoSujeta",
                     {default_no_taxable_cause: 0},
                 )
                 nsub_dict[default_no_taxable_cause] += tax_line["base"]
             if tax in (taxes_sfess + taxes_sfesse + taxes_sfesns):
-                type_breakdown = taxes_dict.setdefault(
-                    "DesgloseTipoOperacion",
-                    {"PrestacionServicios": {}},
-                )
-                if tax in (taxes_sfesse + taxes_sfess):
-                    type_breakdown["PrestacionServicios"].setdefault("Sujeta", {})
-                service_dict = type_breakdown["PrestacionServicios"]
                 if tax in taxes_sfesse:
-                    exempt_dict = service_dict["Sujeta"].setdefault(
+                    service_breakdown.setdefault("Sujeta", {})
+                    exempt_dict = service_breakdown["Sujeta"].setdefault(
                         "Exenta",
                         {"DetalleExenta": [{"BaseImponible": 0}]},
                     )
@@ -595,34 +610,41 @@ class SiiMixin(models.AbstractModel):
                         det_dict["CausaExencion"] = exempt_cause
                     det_dict["BaseImponible"] += tax_line["base"]
                 if tax in taxes_sfess:
+                    service_breakdown.setdefault("Sujeta", {})
                     # TODO l10n_es_ no tiene impuesto ISP de servicios
-                    # if tax in taxes_sfesisps:
-                    #     TipoNoExenta = 'S2'
-                    # else:
-                    service_dict["Sujeta"].setdefault(
+                    # not_exempt_type = "S2" if tax in taxes_sfesisps else "S1"
+                    not_exempt_type = "S1"
+                    not_exempt = service_breakdown["Sujeta"].setdefault(
                         "NoExenta",
-                        {"TipoNoExenta": "S1", "DesgloseIVA": {"DetalleIVA": []}},
+                        {
+                            "TipoNoExenta": not_exempt_type,
+                            "DesgloseIVA": {"DetalleIVA": []},
+                        },
                     )
-                    sub = type_breakdown["PrestacionServicios"]["Sujeta"]["NoExenta"][
-                        "DesgloseIVA"
-                    ]["DetalleIVA"]
-                    sub.append(self._get_sii_tax_dict(tax_line, tax_lines))
+                    if not_exempt_type != not_exempt["TipoNoExenta"]:
+                        # There's a mix of ISP/non ISP -> S3
+                        not_exempt["TipoNoExenta"] = "S3"
+                    sub = not_exempt["DesgloseIVA"]["DetalleIVA"]
+                    tax_dict = self._get_sii_tax_dict(tax_line, tax_lines)
+                    if not self._merge_tax_dict(
+                        sub,
+                        tax_dict,
+                        ["TipoImpositivo"],
+                        ["BaseImponible", "CuotaRepercutida"],
+                    ):
+                        sub.append(tax_dict)
                 if tax in taxes_sfesns:
                     default_no_taxable_cause = self._get_no_taxable_cause()
-                    nsub_dict = service_dict.setdefault(
-                        "NoSujeta",
-                        {default_no_taxable_cause: 0},
+                    nsub_dict = service_breakdown.setdefault(
+                        "NoSujeta", {default_no_taxable_cause: 0}
                     )
                     nsub_dict[default_no_taxable_cause] += tax_line["base"]
-        # Ajustes finales breakdown
-        # - DesgloseFactura y DesgloseTipoOperacion son excluyentes
-        # - Ciertos condicionantes obligan DesgloseTipoOperacion
-        if self._is_sii_type_breakdown_required(taxes_dict):
-            taxes_dict.setdefault("DesgloseTipoOperacion", {})
-            taxes_dict["DesgloseTipoOperacion"]["Entrega"] = taxes_dict[
-                "DesgloseFactura"
-            ]
-            del taxes_dict["DesgloseFactura"]
+        # Ajustes finales breakdown: eliminar clave vacía de entrega / servicios
+        if "DesgloseTipoOperacion" in taxes_dict:
+            if not taxes_dict["DesgloseTipoOperacion"]["Entrega"]:
+                del taxes_dict["DesgloseTipoOperacion"]["Entrega"]
+            if not taxes_dict["DesgloseTipoOperacion"]["PrestacionServicios"]:
+                del taxes_dict["DesgloseTipoOperacion"]["PrestacionServicios"]
         return taxes_dict, not_in_amount_total
 
     def _get_sii_invoice_type(self):
@@ -797,6 +819,10 @@ class SiiMixin(models.AbstractModel):
         for document in self.filtered(
             lambda i: i.state in self._get_valid_document_states()
         ):
+            # Filter the SII description for avoiding manual invalid inputs
+            text = unidecode(document.sii_description)
+            if text != document.sii_description:
+                document.sii_description = text
             if document.aeat_state == "not_sent":
                 tipo_comunicacion = "A0"
             else:
@@ -805,13 +831,9 @@ class SiiMixin(models.AbstractModel):
             doc_vals = {
                 "aeat_header_sent": json.dumps(header, indent=4),
             }
-            # add this extra try except in case _get_aeat_invoice_dict fails
-            # if not, get the value doc_dict for the next try and except below
+            inv_dict = False
             try:
                 inv_dict = document._get_aeat_invoice_dict()
-            except Exception as fault:
-                raise ValidationError(fault) from fault
-            try:
                 mapping_key = document._get_mapping_key()
                 serv = document._connect_aeat(mapping_key)
                 doc_vals["aeat_content_sent"] = json.dumps(inv_dict, indent=4)
@@ -873,10 +895,11 @@ class SiiMixin(models.AbstractModel):
                         "aeat_send_failed": True,
                         "aeat_send_error": repr(fault)[:60],
                         "sii_return": repr(fault),
-                        "aeat_content_sent": json.dumps(inv_dict, indent=4),
                         "sii_send_date": False,
                     }
                 )
+                if inv_dict:
+                    doc_vals["aeat_content_sent"] = json.dumps(inv_dict, indent=4)
                 document.write(doc_vals)
                 new_cr.commit()
                 new_cr.close()

@@ -7,19 +7,44 @@ msgstr ""
 "Project-Id-Version: Odoo Server 14.0-20230418\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-08 07:31+0000\n"
-"PO-Revision-Date: 2023-05-08 08:35+0100\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2026-04-13 17:16+0000\n"
+"Last-Translator: Ed-Spain <eduamoros@gmail.com>\n"
 "Language-Team: \n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.3\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.15.2\n"
+
+#. module: l10n_es_atc_mod420
+#. odoo-python
+#: code:addons/l10n_es_atc_mod420/models/mod420.py:0
+msgid "- Please set the Public Way in the company"
+msgstr ""
+
+#. module: l10n_es_atc_mod420
+#. odoo-python
+#: code:addons/l10n_es_atc_mod420/models/mod420.py:0
+msgid "- Please set the code in the city: %s"
+msgstr ""
+
+#. module: l10n_es_atc_mod420
+#. odoo-python
+#: code:addons/l10n_es_atc_mod420/models/mod420.py:0
+msgid "- Select a payment type"
+msgstr ""
+
+#. module: l10n_es_atc_mod420
+#. odoo-python
+#: code:addons/l10n_es_atc_mod420/models/mod420.py:0
+msgid ""
+"- The selected payment type is not compatible with the output type. Please "
+"select a different payment type."
+msgstr ""
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model,name:l10n_es_atc_mod420.model_l10n_es_atc_mod420_report
-#, fuzzy
 msgid "ATC 420 Report"
 msgstr "Informe ATC 420"
 
@@ -27,7 +52,7 @@ msgstr "Informe ATC 420"
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__move_id
 #, fuzzy
 msgid "Account entry"
-msgstr "Entrada de cuenta"
+msgstr "Asiento contable"
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__message_needaction
@@ -62,7 +87,6 @@ msgstr "Permitir publicación"
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,help:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__regularizacion_cuotas
-#, fuzzy
 msgid ""
 "Amount corresponding to the quotas supported that could not be deducted and "
 "from which it is a debtor to the Treasury Public"
@@ -77,19 +101,21 @@ msgstr "Nº de archivos adjuntos"
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__bank_account_id
+msgid "Bank Account"
+msgstr ""
+
+#. module: l10n_es_atc_mod420
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__partner_bank_id
 msgid "Bank account"
 msgstr "Cuenta Bancaria"
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,help:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__casilla_23
-#, fuzzy
 msgid "Basis of the fee in the passenger regime made by the subject passive"
 msgstr "Base de la tasa en régimen de pasajeros realizada por el sujeto pasivo"
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__calculation_date
-#, fuzzy
 msgid "Calculation Date"
 msgstr "Fecha de cálculo"
 
@@ -103,6 +129,11 @@ msgstr "Carátula Sobre"
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__company_id
 msgid "Company"
 msgstr "Empresa"
+
+#. module: l10n_es_atc_mod420
+#: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__company_partner_id
+msgid "Company Partner"
+msgstr ""
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,help:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__partner_bank_id
@@ -165,9 +196,8 @@ msgstr "Fecha de finalización"
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__error_count
-#, fuzzy
 msgid "Error Count"
-msgstr "Recuento de errores"
+msgstr "Número de errores"
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__export_config_id
@@ -197,15 +227,24 @@ msgid "Font awesome icon e.g. fa-tasks"
 msgstr "Icono de Font Awesome ej. fa-tasks"
 
 #. module: l10n_es_atc_mod420
+#: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__payment_type
+msgid "Forma de pago"
+msgstr ""
+
+#. module: l10n_es_atc_mod420
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__contact_name
 msgid "Full Name"
 msgstr "Nombre completo"
 
 #. module: l10n_es_atc_mod420
+#: model_terms:ir.ui.view,arch_db:l10n_es_atc_mod420.view_l10n_es_atc_mod420_report_form
+msgid "Generar declaración"
+msgstr ""
+
+#. module: l10n_es_atc_mod420
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__has_message
-#, fuzzy
 msgid "Has Message"
-msgstr "Mensajes"
+msgstr "Tiene Mensajes"
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__id
@@ -244,20 +283,13 @@ msgstr "Diario"
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,help:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__journal_id
-#, fuzzy
 msgid "Journal in which post the move."
-msgstr "Diario en el que publicar la mudanza."
+msgstr "Diario en el que contabilizar el asiento."
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__representative_vat
-#, fuzzy
 msgid "L.R. VAT number"
-msgstr "Número de IVA L.R."
-
-#. module: l10n_es_atc_mod420
-#: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report____last_update
-msgid "Last Modified on"
-msgstr "Última modificación el"
+msgstr "CIF/NIF Representante legal"
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__write_uid
@@ -271,14 +303,8 @@ msgstr "Actualizado el"
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,help:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__representative_vat
-#, fuzzy
 msgid "Legal Representative VAT number."
-msgstr "Número de IVA de representante legal."
-
-#. module: l10n_es_atc_mod420
-#: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__message_main_attachment_id
-msgid "Main Attachment"
-msgstr "Adjunto principal"
+msgstr "Número de IVA (NIF) de representante legal."
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__message_has_error
@@ -289,6 +315,11 @@ msgstr "Error de Envío de Mensaje"
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__message_ids
 msgid "Messages"
 msgstr "Mensajes"
+
+#. module: l10n_es_atc_mod420
+#: model:ir.actions.report,name:l10n_es_atc_mod420.mod420_xml_report
+msgid "Mod 420 xml report"
+msgstr ""
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__number
@@ -311,9 +342,8 @@ msgstr "Modelo ATC 420"
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,help:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__contact_name
-#, fuzzy
 msgid "Must have name and surname."
-msgstr "Debe tener nombre y apellidos."
+msgstr "El nombre del contacto debe contener nombre y apellidos"
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__my_activity_date_deadline
@@ -336,10 +366,8 @@ msgid "Next Activity Type"
 msgstr "Siguiente tipo de actividad"
 
 #. module: l10n_es_atc_mod420
-#. odoo-python
-#: code:addons/l10n_es_atc_mod420/models/mod420.py:0
 #: model:ir.model.fields.selection,name:l10n_es_atc_mod420.selection__l10n_es_atc_mod420_report__result_type__n
-#, fuzzy, python-format
+#, fuzzy
 msgid "No activity/Zero result"
 msgstr "Sin actividad/Resultado cero"
 
@@ -365,7 +393,6 @@ msgid "Number of messages with delivery error"
 msgstr "Número de mensajes con error de envío"
 
 #. module: l10n_es_atc_mod420
-#: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__company_partner_id
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__partner_id
 msgid "Partner"
 msgstr "Socio"
@@ -424,6 +451,11 @@ msgstr ""
 "servicios antes del inicio de actividades empresariales o profesionales"
 
 #. module: l10n_es_atc_mod420
+#: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__rating_ids
+msgid "Ratings"
+msgstr ""
+
+#. module: l10n_es_atc_mod420
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__name
 #, fuzzy
 msgid "Report identifier"
@@ -448,14 +480,14 @@ msgstr "Resultado"
 #. module: l10n_es_atc_mod420
 #. odoo-python
 #: code:addons/l10n_es_atc_mod420/models/mod420.py:0
-#, fuzzy, python-format
+#, fuzzy
 msgid "Select an account for making the charge"
 msgstr "Seleccione una cuenta para realizar el cargo"
 
 #. module: l10n_es_atc_mod420
 #. odoo-python
 #: code:addons/l10n_es_atc_mod420/models/mod420.py:0
-#, fuzzy, python-format
+#, fuzzy
 msgid "Select an account for receiving the money"
 msgstr "Seleccione una cuenta para recibir el dinero"
 
@@ -496,7 +528,7 @@ msgstr "Tipo Soporte"
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__tax_agency_ids
 msgid "Tax Agency"
-msgstr ""
+msgstr "Agencia tributaria"
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__tax_line_ids
@@ -533,28 +565,25 @@ msgstr ""
 "Esta casilla solo se completará en caso de autoevaluación complementaria"
 
 #. module: l10n_es_atc_mod420
-#. odoo-python
-#: code:addons/l10n_es_atc_mod420/models/mod420.py:0
+#: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__output_type
+msgid "Tipo de salida"
+msgstr ""
+
+#. module: l10n_es_atc_mod420
 #: model:ir.model.fields.selection,name:l10n_es_atc_mod420.selection__l10n_es_atc_mod420_report__result_type__c
-#, fuzzy, python-format
+#, fuzzy
 msgid "To compensate"
 msgstr "Para compensar"
 
 #. module: l10n_es_atc_mod420
-#. odoo-python
-#: code:addons/l10n_es_atc_mod420/models/mod420.py:0
 #: model:ir.model.fields.selection,name:l10n_es_atc_mod420.selection__l10n_es_atc_mod420_report__result_type__i
-#, fuzzy, python-format
 msgid "To enter"
 msgstr "Para participar"
 
 #. module: l10n_es_atc_mod420
-#. odoo-python
-#: code:addons/l10n_es_atc_mod420/models/mod420.py:0
 #: model:ir.model.fields.selection,name:l10n_es_atc_mod420.selection__l10n_es_atc_mod420_report__result_type__d
-#, fuzzy, python-format
 msgid "To return"
-msgstr "Es devolución"
+msgstr "A devolver"
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,help:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__activity_exception_decoration
@@ -565,6 +594,11 @@ msgstr "Tipo de actividad de excepción registrada."
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__company_vat
 msgid "VAT number"
 msgstr "Número de IVA"
+
+#. module: l10n_es_atc_mod420
+#: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__valued_tax_line_ids
+msgid "Valued tax lines"
+msgstr ""
 
 #. module: l10n_es_atc_mod420
 #: model:ir.model.fields,field_description:l10n_es_atc_mod420.field_l10n_es_atc_mod420_report__website_message_ids
@@ -659,6 +693,12 @@ msgstr "[44] Para deducir"
 msgid "[45] Self-assessment result"
 msgstr "[45] Resultado de la autoevaluación"
 
+#~ msgid "Last Modified on"
+#~ msgstr "Última modificación el"
+
+#~ msgid "Main Attachment"
+#~ msgstr "Adjunto principal"
+
 #, fuzzy
 #~ msgid "0,00"
 #~ msgstr "0,00"
@@ -728,14 +768,14 @@ msgstr "[45] Resultado de la autoevaluación"
 #~ "<b>Resultado de la autoliquidación ( <span style=\"background-color: "
 #~ "#808080;color:white\">23</span> -\t\t\t\t\t\t\t\t\t\t\t\t<span "
 #~ "style=\"background-color: #808080;color:white\">24</span> -"
-#~ "\t\t\t\t\t\t\t\t\t\t\t\t<span style=\"background-color: #808080;color:"
-#~ "white\">25</span> )\n"
+#~ "\t\t\t\t\t\t\t\t\t\t\t\t<span style=\"background-color: "
+#~ "#808080;color:white\">25</span> )\n"
 #~ "\t\t\t\t\t\t\t\t\t\t\t</b> ____"
 #~ msgstr ""
 #~ "<b>Resultado de la autoliquidación ( <span style=\"background-color: "
-#~ "#808080;color:white\">23</span> - <span style=\"background-color: #808080;"
-#~ "color:white\">24</span> - <span style=\"background-color: #808080;color:"
-#~ "white\">25</span> )\n"
+#~ "#808080;color:white\">23</span> - <span style=\"background-color: "
+#~ "#808080;color:white\">24</span> - <span style=\"background-color: "
+#~ "#808080;color:white\">25</span> )\n"
 #~ "\t\t\t\t\t\t\t\t\t\t\t</b> ____"
 
 #, fuzzy
@@ -943,8 +983,8 @@ msgstr "[45] Resultado de la autoevaluación"
 #, fuzzy
 #~ msgid ""
 #~ "difference ( <span style=\"background-color: #808080;color:white\">15</"
-#~ "span> -\t\t\t\t\t\t\t\t\t\t\t<span style=\"background-color: #808080;"
-#~ "color:white\">22</span> ) _____________________"
+#~ "span> -\t\t\t\t\t\t\t\t\t\t\t<span style=\"background-color: "
+#~ "#808080;color:white\">22</span> ) _____________________"
 #~ msgstr ""
 #~ "diferencia ( <span style=\"background-color: #808080;color:white\">15</"
 #~ "span> - <span style=\"background-color: #808080;color:white\">22</span> ) "

@@ -7,15 +7,15 @@ msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-17 11:49+0000\n"
-"PO-Revision-Date: 2024-05-14 09:08+0000\n"
-"Last-Translator: Ivorra78 <informatica@totmaterial.es>\n"
+"PO-Revision-Date: 2026-04-13 17:16+0000\n"
+"Last-Translator: Ed-Spain <eduamoros@gmail.com>\n"
 "Language-Team: \n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.17\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. module: l10n_es_aeat_mod369
 #: model_terms:ir.ui.view,arch_db:l10n_es_aeat_mod369.view_l10n_es_aeat_mod369_report_form
@@ -68,6 +68,11 @@ msgid "AEAT tax line"
 msgstr "Línea de impuestos AEAT"
 
 #. module: l10n_es_aeat_mod369
+#: model:ir.model,name:l10n_es_aeat_mod369.model_l10n_es_aeat_map_tax_line
+msgid "AEAT tax mapping line"
+msgstr ""
+
+#. module: l10n_es_aeat_mod369
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_report__move_id
 msgid "Account entry"
 msgstr "Asiento contable"
@@ -110,7 +115,7 @@ msgstr "Cuota"
 #. module: l10n_es_aeat_mod369
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_line_grouped__amount_str
 msgid "Amount Str"
-msgstr ""
+msgstr "Importe (texto)"
 
 #. module: l10n_es_aeat_mod369
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_line_grouped__amount
@@ -134,8 +139,9 @@ msgstr "Cuenta bancaria"
 
 #. module: l10n_es_aeat_mod369
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_line_grouped__base_str
+#, fuzzy
 msgid "Base Str"
-msgstr ""
+msgstr "Base Str"
 
 #. module: l10n_es_aeat_mod369
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_line_grouped__base
@@ -344,7 +350,6 @@ msgstr "Es línea de la página 8"
 #. module: l10n_es_aeat_mod369
 #. odoo-python
 #: code:addons/l10n_es_aeat_mod369/models/mod369.py:0
-#, python-format
 msgid "It is not possible to create a move if the total amount is 0."
 msgstr ""
 "No es posible generar un asiento si el saldo total a ingresar es igual a 0."
@@ -365,13 +370,6 @@ msgid "L.R. VAT number"
 msgstr "NIF repr. legal"
 
 #. module: l10n_es_aeat_mod369
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_line____last_update
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_line_grouped____last_update
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_report____last_update
-msgid "Last Modified on"
-msgstr "Últ. modificación en"
-
-#. module: l10n_es_aeat_mod369
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_line__write_uid
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_line_grouped__write_uid
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_report__write_uid
@@ -389,11 +387,6 @@ msgstr "Última actualización el"
 #: model:ir.model.fields,help:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_report__representative_vat
 msgid "Legal Representative VAT number."
 msgstr "NIF del representant legal."
-
-#. module: l10n_es_aeat_mod369
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_report__message_main_attachment_id
-msgid "Main Attachment"
-msgstr "Archivo Adjunto Principal"
 
 #. module: l10n_es_aeat_mod369
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_line__map_line_id
@@ -547,6 +540,11 @@ msgid "Previous declaration number"
 msgstr "Número de la declaración anterior"
 
 #. module: l10n_es_aeat_mod369
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_report__rating_ids
+msgid "Ratings"
+msgstr ""
+
+#. module: l10n_es_aeat_mod369
 #: model:ir.model.fields.selection,name:l10n_es_aeat_mod369.selection__account_tax__tax_reduction_type__r
 msgid "Reduced"
 msgstr "Reducido"
@@ -681,7 +679,7 @@ msgstr "Impuesto"
 #. module: l10n_es_aeat_mod369
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_report__tax_agency_ids
 msgid "Tax Agency"
-msgstr ""
+msgstr "Agencia tributaria"
 
 #. module: l10n_es_aeat_mod369
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_line_grouped__tax_correction
@@ -768,7 +766,7 @@ msgstr "NIF"
 #. module: l10n_es_aeat_mod369
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_report__valued_tax_line_ids
 msgid "Valued tax lines"
-msgstr ""
+msgstr "Líneas de impuestos con valores"
 
 #. module: l10n_es_aeat_mod369
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod369.field_l10n_es_aeat_mod369_line_grouped__vat_type_str
@@ -822,6 +820,12 @@ msgstr ""
 #: model:ir.model.fields.selection,name:l10n_es_aeat_mod369.selection__l10n_es_aeat_mod369_report__payment_type__t
 msgid "[T] Ingreso por transferencia desde el extranjero"
 msgstr "[T] Ingreso por transferencia desde el extranjero"
+
+#~ msgid "Last Modified on"
+#~ msgstr "Últ. modificación en"
+
+#~ msgid "Main Attachment"
+#~ msgstr "Archivo Adjunto Principal"
 
 #~ msgid ""
 #~ "The ISO country code in two chars. \n"

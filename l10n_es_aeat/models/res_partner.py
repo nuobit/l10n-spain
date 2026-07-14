@@ -44,6 +44,7 @@ class ResPartner(models.Model):
     aeat_sending_enabled = fields.Boolean(
         compute="_compute_aeat_sending_enabled",
     )
+    real_estate_ids = fields.One2many("l10n.es.aeat.real_estate", "partner_id")
 
     def _compute_aeat_sending_enabled(self):
         self.aeat_sending_enabled = False
@@ -124,4 +125,16 @@ class ResPartner(models.Model):
             country_code,
             self.aeat_identification_type or identifier_type,
             self.aeat_identification if self.aeat_identification_type else vat_number,
+        )
+
+    def _has_valid_aeat_identification(self, allow_alternative_identification=True):
+        """Check whether a partner has a valid identification for AEAT reports."""
+        self.ensure_one()
+        return bool(
+            self.vat
+            or (
+                allow_alternative_identification
+                and self.aeat_identification_type
+                and self.aeat_identification
+            )
         )

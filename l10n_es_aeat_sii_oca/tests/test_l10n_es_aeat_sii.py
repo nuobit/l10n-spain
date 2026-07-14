@@ -50,12 +50,9 @@ class TestL10nEsAeatSiiBase(TestL10nEsAeatModBase, TestL10nEsAeatCertificateBase
         vals = []
         tax_names = []
         for line in lines:
-            taxes = self.env["account.tax"]
-            for tax in line[1]:
-                xml_id = f"account_tax_template_{tax}"
-                tax_id = self.company._get_tax_id_from_xmlid(xml_id)
-                taxes += self.env["account.tax"].browse(tax_id)
-                tax_names.append(tax)
+            xml_ids = [f"account_tax_template_{x}" for x in line[1]]
+            taxes = self.company._get_taxes_from_xmlids(xml_ids)
+            tax_names += line[1]
             vals.append({"price_unit": line[0], "taxes": taxes})
         return self._compare_sii_dict(
             "sii_{}_{}_dict.json".format(inv_type, "_".join(tax_names)),
@@ -160,6 +157,10 @@ class TestL10nEsAeatSiiBase(TestL10nEsAeatModBase, TestL10nEsAeatCertificateBase
                 "tax_agency_id": cls.env.ref("l10n_es_aeat.aeat_tax_agency_spain"),
             }
         )
+        cls.fp_intra = cls.env.ref(f"account.{cls.company.id}_fp_intra")
+        cls.fp_intra.sii_partner_identification_type = "2"
+        cls.fp_extra = cls.env.ref(f"account.{cls.company.id}_fp_extra")
+        cls.fp_extra.sii_partner_identification_type = "3"
 
 
 class TestL10nEsAeatSii(TestL10nEsAeatSiiBase):
@@ -243,6 +244,7 @@ class TestL10nEsAeatSii(TestL10nEsAeatSiiBase):
 
     def test_get_invoice_data(self):
         mapping = [
+            ("out_invoice", [(100, ["s_iva21b"]), (200, ["s_iva21s"])], {}, False),
             ("out_invoice", [(100, ["s_iva10b"]), (200, ["s_iva21s"])], {}, False),
             ("out_invoice", [(100, ["s_iva10b"]), (200, ["s_iva0_ns"])], {}, False),
             (
@@ -342,6 +344,17 @@ class TestL10nEsAeatSii(TestL10nEsAeatSiiBase):
                     "currency_id": self.usd.id,
                 },
                 True,
+            ),
+            # In invoice with same rate but different investment goods
+            (
+                "in_invoice",
+                [(100, ["p_iva21_bc"]), (100, ["p_iva21_bi"])],
+                {
+                    "ref": "sup0008",
+                    "sii_account_registration_date": "2020-10-01",
+                    "currency_id": self.usd.id,
+                },
+                False,
             ),
         ]
         for inv_type, lines, extra_vals, is_dua in mapping:
@@ -595,3 +608,21 @@ class TestL10nEsAeatSii(TestL10nEsAeatSiiBase):
         self.company.sii_start_date = False
         self.assertTrue(invoice2.sii_enabled)
         self.assertTrue(invoice2.filtered_domain([("sii_enabled", "=", True)]))
+
+    def test_journals_dashboard_data(self):
+        self.company.sii_start_date = "2018-01-01"
+        invoice1 = self._create_invoice("out_invoice")
+        invoice1.invoice_date = "2019-01-01"
+        invoice1._post()
+        invoice2 = self._create_invoice("out_invoice")
+        invoice2.invoice_date = "2017-01-01"
+        invoice2._post()
+        invoice3 = self._create_invoice("out_invoice")
+        invoice3.invoice_date = "2019-06-01"
+        invoice3.aeat_send_failed = True
+        invoice3._post()
+        dashboard_data = {invoice1.journal_id.id: {}}
+        invoice1.journal_id._fill_sale_purchase_dashboard_data(dashboard_data)
+        data = dashboard_data.get(invoice1.journal_id.id, {})
+        self.assertEqual(data.get("number_not_sent"), 3)
+        self.assertEqual(data.get("number_aeat_failed"), 1)

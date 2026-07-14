@@ -7,14 +7,15 @@ msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-12 09:51+0000\n"
-"PO-Revision-Date: 2023-12-12 09:51+0000\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2026-04-13 17:16+0000\n"
+"Last-Translator: Ed-Spain <eduamoros@gmail.com>\n"
 "Language-Team: \n"
-"Language: \n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: \n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. module: l10n_es_aeat_mod349
 #: model:ir.model.fields.selection,name:l10n_es_aeat_mod349.selection__account_move_line__l10n_es_aeat_349_operation_key__a
@@ -139,7 +140,6 @@ msgstr "Mapeo de Línea Aeat 349"
 #. module: l10n_es_aeat_mod349
 #. odoo-python
 #: code:addons/l10n_es_aeat_mod349/models/mod349.py:0
-#, python-format
 msgid "All partner records fields (country, VAT number) must be filled."
 msgstr ""
 "Todos los campos de los registros de empresas (país, número NIF) deben estar "
@@ -148,7 +148,6 @@ msgstr ""
 #. module: l10n_es_aeat_mod349
 #. odoo-python
 #: code:addons/l10n_es_aeat_mod349/models/mod349.py:0
-#, python-format
 msgid "All partner refunds fields (country, VAT number) must be filled."
 msgstr ""
 "Todos los campos de las rectificaciones (país, número, NIF) deben estar "
@@ -224,7 +223,6 @@ msgstr "Email de contacto"
 #. module: l10n_es_aeat_mod349
 #. odoo-python
 #: code:addons/l10n_es_aeat_mod349/models/mod349.py:0
-#, python-format
 msgid "Contact name (Full name) must have name and surname"
 msgstr ""
 "El nombre del contacto (Nombre completo) debe contener nombre y apellidos"
@@ -248,7 +246,6 @@ msgstr "País"
 #. module: l10n_es_aeat_mod349
 #. odoo-python
 #: code:addons/l10n_es_aeat_mod349/models/mod349.py:0
-#, python-format
 msgid "Country code not found in Europe"
 msgstr "Código de país no encontrado en Europa"
 
@@ -321,7 +318,6 @@ msgstr "E - Entregas intracomunitarias"
 #. module: l10n_es_aeat_mod349
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod349.field_account_bank_statement_line__eu_triangular_deal
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod349.field_account_move__eu_triangular_deal
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod349.field_account_payment__eu_triangular_deal
 msgid "EU Triangular deal"
 msgstr "Acuerdo triangular UE"
 
@@ -387,7 +383,7 @@ msgstr "Nombre completo"
 #. module: l10n_es_aeat_mod349
 #: model_terms:ir.ui.view,arch_db:l10n_es_aeat_mod349.view_l10n_es_aeat_mod349_report_form
 msgid "General"
-msgstr ""
+msgstr "General"
 
 #. module: l10n_es_aeat_mod349
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod349.field_l10n_es_aeat_mod349_report__has_message
@@ -433,7 +429,7 @@ msgstr "Si está seleccionado, algunos mensajes tienen un error de entrega."
 #: model_terms:ir.ui.view,arch_db:l10n_es_aeat_mod349.view_l10n_ES_aeat_mod349_partner_record_form
 #: model_terms:ir.ui.view,arch_db:l10n_es_aeat_mod349.view_l10n_ES_aeat_mod349_partner_refund_form
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #. module: l10n_es_aeat_mod349
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod349.field_l10n_es_aeat_mod349_partner_record_detail__move_id
@@ -541,7 +537,6 @@ msgstr "Fecha límite de mi actividad"
 #. module: l10n_es_aeat_mod349
 #. odoo-python
 #: code:addons/l10n_es_aeat_mod349/models/mod349.py:0
-#, python-format
 msgid "Negative amount"
 msgstr "Importe negativo"
 
@@ -568,7 +563,6 @@ msgstr "Próximo tipo de actividad"
 #. module: l10n_es_aeat_mod349
 #. odoo-python
 #: code:addons/l10n_es_aeat_mod349/models/mod349.py:0
-#, python-format
 msgid "No Tax Mapping was found"
 msgstr "No se encontró Mapeo de Impuestos"
 
@@ -585,7 +579,7 @@ msgstr "Número de errores"
 #. module: l10n_es_aeat_mod349
 #: model:ir.model.fields,help:l10n_es_aeat_mod349.field_l10n_es_aeat_mod349_report__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "Número de mensajes que requieren atención"
 
 #. module: l10n_es_aeat_mod349
 #: model:ir.model.fields,help:l10n_es_aeat_mod349.field_l10n_es_aeat_mod349_report__message_has_error_counter
@@ -733,6 +727,11 @@ msgid "Previously Reported Amount"
 msgstr "Importe declarado previamente"
 
 #. module: l10n_es_aeat_mod349
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod349.field_l10n_es_aeat_mod349_report__rating_ids
+msgid "Ratings"
+msgstr ""
+
+#. module: l10n_es_aeat_mod349
 #: model_terms:ir.ui.view,arch_db:l10n_es_aeat_mod349.mod349_partner_refund_head
 msgid "Rectifying Period Type"
 msgstr "Tipo de periodo rectificado"
@@ -769,8 +768,9 @@ msgstr "Usuario responsable"
 
 #. module: l10n_es_aeat_mod349
 #: model_terms:ir.ui.view,arch_db:l10n_es_aeat_mod349.view_l10n_es_aeat_mod349_report_form
+#, fuzzy
 msgid "Resultado"
-msgstr ""
+msgstr "Resultado"
 
 #. module: l10n_es_aeat_mod349
 #: model:ir.model.fields.selection,name:l10n_es_aeat_mod349.selection__account_move_line__l10n_es_aeat_349_operation_key__s
@@ -845,7 +845,7 @@ msgstr "Agencia Tributaria"
 #. module: l10n_es_aeat_mod349
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod349.field_aeat_349_map_line__tax_xmlid_ids
 msgid "Taxes templates"
-msgstr ""
+msgstr "Plantillas de impuestos"
 
 #. module: l10n_es_aeat_mod349
 #: model:ir.model.constraint,message:l10n_es_aeat_mod349.constraint_aeat_349_map_line_unique_operation_key
@@ -864,7 +864,6 @@ msgstr ""
 #. module: l10n_es_aeat_mod349
 #: model:ir.model.fields,help:l10n_es_aeat_mod349.field_account_bank_statement_line__eu_triangular_deal
 #: model:ir.model.fields,help:l10n_es_aeat_mod349.field_account_move__eu_triangular_deal
-#: model:ir.model.fields,help:l10n_es_aeat_mod349.field_account_payment__eu_triangular_deal
 msgid ""
 "This invoice constitutes a triangular operation for the purposes of intra-"
 "community operations."
@@ -924,7 +923,6 @@ msgstr "Número NIF"
 #. odoo-python
 #: code:addons/l10n_es_aeat_mod349/models/mod349.py:0
 #: code:addons/l10n_es_aeat_mod349/tests/test_l10n_es_aeat_mod349.py:0
-#, python-format
 msgid "VAT without country code"
 msgstr "NIF sin código de país"
 
@@ -947,14 +945,12 @@ msgstr "Historial de comunicación del sitio Web"
 #. odoo-python
 #: code:addons/l10n_es_aeat_mod349/models/mod349.py:0
 #: code:addons/l10n_es_aeat_mod349/tests/test_l10n_es_aeat_mod349.py:0
-#, python-format
 msgid "Without Country"
 msgstr "Sin país"
 
 #. module: l10n_es_aeat_mod349
 #. odoo-python
 #: code:addons/l10n_es_aeat_mod349/models/mod349.py:0
-#, python-format
 msgid "Without Total Operation Amount"
 msgstr "Sin Importe total de la operación"
 
@@ -962,7 +958,6 @@ msgstr "Sin Importe total de la operación"
 #. odoo-python
 #: code:addons/l10n_es_aeat_mod349/models/mod349.py:0
 #: code:addons/l10n_es_aeat_mod349/tests/test_l10n_es_aeat_mod349.py:0
-#, python-format
 msgid "Without VAT"
 msgstr "Sin NIF"
 

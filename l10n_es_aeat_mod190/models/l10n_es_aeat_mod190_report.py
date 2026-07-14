@@ -2,6 +2,8 @@
 # Copyright 2024 Tecnativa - Víctor Martínez
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+from collections import defaultdict
+
 from odoo import _, api, exceptions, fields, models
 
 from odoo.addons.l10n_es_aeat.models.spanish_states_mapping import SPANISH_STATES
@@ -92,6 +94,12 @@ class L10nEsAeatMod190Report(models.Model):
                 value += sum(item.mapped("partner_record_ids.retenciones_dinerarias"))
                 value += sum(
                     item.mapped("partner_record_ids.retenciones_dinerarias_incap")
+                )
+                value += sum(
+                    item.mapped("partner_record_ids.ingresos_a_cuenta_efectuados")
+                )
+                value += sum(
+                    item.mapped("partner_record_ids.ingresos_a_cuenta_efectuados_incap")
                 )
             else:
                 tax_lines = item.tax_line_ids.filtered(
@@ -280,7 +288,7 @@ class L10nEsAeatMod190ReportLine(models.Model):
         compute="_compute_codigo_provincia",
         store=True,
     )
-    # DATOS ADICIONALES (solo en las claves A, B.01, B.03, C, E.01 y E.02).
+    # DATOS ADICIONALES (solo en las claves A, B.01, B.03, B.04, B.99, C, E.01 y E.02).
     a_nacimiento = fields.Char(
         string="Year of birth", compute="_compute_partner_id_ad_required", store=True
     )
@@ -606,24 +614,20 @@ class L10nEsAeatMod190ReportLine(models.Model):
     # Calculo campos SIN incapacidad
     @api.depends("report_id", "report_id.tax_line_ids", "discapacidad")
     def _compute_percepciones(self):
-        tax_data = {}
+        tax_data = defaultdict(lambda: defaultdict(dict))
         domain = []
         if len(self.partner_id) == 1:
             # This should only happen when we are making a small update on
             # 'discapacidad'
             domain.append(("partner_id", "=", self.partner_id.id))
         for report in self.report_id:
-            tax_data[report.id] = {
-                "11": report._get_grouped_data(11, domain),
-                "12": report._get_grouped_data(12, domain),
-                "13": report._get_grouped_data(13, domain),
-                "14": report._get_grouped_data(14, domain),
-                "15": report._get_grouped_data(15, domain),
-                "16": report._get_grouped_data(16, domain),
-                "17": report._get_grouped_data(17, domain),
-                "18": report._get_grouped_data(18, domain),
-                "19": report._get_grouped_data(19, domain),
-            }
+            if report.tax_line_ids:
+                tax_data[report.id] = {
+                    str(line.field_number): report._get_grouped_data(
+                        line.field_number, domain
+                    )
+                    for line in report.tax_line_ids
+                }
         for item in self:
             keys = [
                 (
