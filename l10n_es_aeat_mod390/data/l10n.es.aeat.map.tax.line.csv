@@ -5,12 +5,12 @@ aeat_mod390_map_line_03,3,base,False,aeat_mod390_map,regular,Régimen ordinario 
 aeat_mod390_map_line_04,4,amount,False,aeat_mod390_map,regular,Régimen ordinario - Cuota 10%,both,,"s_iva10b,s_iva10s"
 aeat_mod390_map_line_05,5,base,False,aeat_mod390_map,regular,Régimen ordinario - Base imponible 21%,both,,"s_iva21b,s_iva21s"
 aeat_mod390_map_line_06,6,amount,False,aeat_mod390_map,regular,Régimen ordinario - Cuota 21%,both,,"s_iva21b,s_iva21s"
-aeat_mod390_map_line_21,21,base,True,aeat_mod390_map,regular,Adquisiciones intracomunitarias de bienes - Base 4%,both,,p_iva4_ic_bc
-aeat_mod390_map_line_22,22,amount,False,aeat_mod390_map,regular,Adquisiciones intracomunitarias de bienes - Cuota 4%,both,common_477,p_iva4_ic_bc
-aeat_mod390_map_line_23,23,base,True,aeat_mod390_map,regular,Adquisiciones intracomunitarias de bienes - Base 10%,both,,p_iva10_ic_bc
-aeat_mod390_map_line_24,24,amount,False,aeat_mod390_map,regular,Adquisiciones intracomunitarias de bienes - Cuota 10%,both,common_477,p_iva10_ic_bc
-aeat_mod390_map_line_25,25,base,True,aeat_mod390_map,regular,Adquisiciones intracomunitarias de bienes - Base 21%,both,,p_iva21_ic_bc
-aeat_mod390_map_line_26,26,amount,False,aeat_mod390_map,regular,Adquisiciones intracomunitarias de bienes - Cuota 21%,both,common_477,p_iva21_ic_bc
+aeat_mod390_map_line_21,21,base,True,aeat_mod390_map,regular,Adquisiciones intracomunitarias de bienes - Base 4%,both,,"p_iva4_ic_bc,p_iva4_ic_bi"
+aeat_mod390_map_line_22,22,amount,False,aeat_mod390_map,regular,Adquisiciones intracomunitarias de bienes - Cuota 4%,both,common_477,"p_iva4_ic_bc,p_iva4_ic_bi"
+aeat_mod390_map_line_23,23,base,True,aeat_mod390_map,regular,Adquisiciones intracomunitarias de bienes - Base 10%,both,,"p_iva10_ic_bc,p_iva10_ic_bi"
+aeat_mod390_map_line_24,24,amount,False,aeat_mod390_map,regular,Adquisiciones intracomunitarias de bienes - Cuota 10%,both,common_477,"p_iva10_ic_bc,p_iva10_ic_bi"
+aeat_mod390_map_line_25,25,base,True,aeat_mod390_map,regular,Adquisiciones intracomunitarias de bienes - Base 21%,both,,"p_iva21_ic_bc,p_iva21_ic_bi"
+aeat_mod390_map_line_26,26,amount,False,aeat_mod390_map,regular,Adquisiciones intracomunitarias de bienes - Cuota 21%,both,common_477,"p_iva21_ic_bc,p_iva21_ic_bi"
 aeat_mod390_map_line_545,545,base,True,aeat_mod390_map,regular,Adquisiciones intracomunitarias de servicios - Base 4%,both,,p_iva4_sp_in
 aeat_mod390_map_line_546,546,amount,True,aeat_mod390_map,regular,Adquisiciones intracomunitarias de servicios - Cuota 4%,both,common_472,p_iva4_sp_in
 aeat_mod390_map_line_547,547,base,True,aeat_mod390_map,regular,Adquisiciones intracomunitarias de servicios - Base 10%,both,,p_iva10_sp_in

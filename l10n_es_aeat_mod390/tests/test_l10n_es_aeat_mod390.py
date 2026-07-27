@@ -86,17 +86,17 @@ class TestL10nEsAeatMod390Base(TestL10nEsAeatModBase):
             # Régimen ordinario - Cuota 21%
             ("6", 1738.8),
             # Adquisiciones intracomunitarias de bienes - Base 4%
-            ("21", 300.0),
+            ("21", 2400.0),
             # Adquisiciones intracomunitarias de bienes - Cuota 4%
-            ("22", 12.0),
+            ("22", 96.0),
             # Adquisiciones intracomunitarias de bienes - Base 10%
-            ("23", 600.0),
+            ("23", 3000.0),
             # Adquisiciones intracomunitarias de bienes - Cuota 10%
-            ("24", 60.0),
+            ("24", 300.0),
             # Adquisiciones intracomunitarias de bienes - Base 21%
-            ("25", 900.0),
+            ("25", 3600.0),
             # Adquisiciones intracomunitarias de bienes - Cuota 21%
-            ("26", 189.0),
+            ("26", 756.0),
             # IVA devengado otros supuestos de inversión del sujeto pasivo - Base
             ("27", 1950.0),  # (110 + 120 + 130 + 140 + 150) * 3
             # IVA devengado otros supuestos de inversión del sujeto pasivo - Cuota
@@ -282,9 +282,9 @@ class TestL10nEsAeatMod390(TestL10nEsAeatMod390Base):
                 f"Incorrect result in field {field} {ex.exception}",
             )
         # Check computed fields
-        self.assertAlmostEqual(self.model390.casilla_33, 17380.0, 2)
-        self.assertAlmostEqual(self.model390.casilla_34, 2184.8, 2)
-        self.assertAlmostEqual(self.model390.casilla_47, 2449.8, 2)
+        self.assertAlmostEqual(self.model390.casilla_33, 24580.0, 2)
+        self.assertAlmostEqual(self.model390.casilla_34, 3075.8, 2)
+        self.assertAlmostEqual(self.model390.casilla_47, 3340.8, 2)
         self.assertAlmostEqual(self.model390.casilla_48, 6180.0, 2)
         self.assertAlmostEqual(self.model390.casilla_49, 696.6, 2)
         self.assertAlmostEqual(self.model390.casilla_50, 2880.0, 2)
@@ -300,13 +300,13 @@ class TestL10nEsAeatMod390(TestL10nEsAeatMod390Base):
         self.assertAlmostEqual(self.model390.casilla_597, 4500.0, 2)
         self.assertAlmostEqual(self.model390.casilla_598, 576.0, 2)
         self.assertAlmostEqual(self.model390.casilla_64, 2341.25, 2)
-        self.assertAlmostEqual(self.model390.casilla_65, 108.55, 2)
-        self.assertAlmostEqual(self.model390.casilla_86, 108.55, 2)
+        self.assertAlmostEqual(self.model390.casilla_65, 999.55, 2)
+        self.assertAlmostEqual(self.model390.casilla_86, 999.55, 2)
         self.assertAlmostEqual(self.model390.casilla_108, 41880.0, 2)
         # It's not possible to confirm without entering manual 303 summary
         with self.assertRaises(exceptions.UserError):
             self.model390.button_confirm()
-        self.model390.casilla_95 = 108.55
+        self.model390.casilla_95 = 999.55
         self.model390.button_confirm()
         # Export to BOE
         export_to_boe = self.env["l10n.es.aeat.report.export_to_boe"].create(
